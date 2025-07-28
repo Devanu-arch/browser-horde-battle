@@ -1,3 +1,4 @@
+
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Player as PlayerType } from '../hooks/useGameStore';
@@ -16,11 +17,6 @@ export const Player = ({ player, isLocalPlayer }: PlayerProps) => {
       meshRef.current.rotation.y = player.rotation;
     }
   });
-
-  // Don't render the local player's body (first person view)
-  if (isLocalPlayer) {
-    return null;
-  }
 
   const teamColor = player.team === 'human' ? '#00aaff' : '#ff4444';
 
@@ -61,6 +57,14 @@ export const Player = ({ player, isLocalPlayer }: PlayerProps) => {
         <ringGeometry args={[0.8, 1, 8]} />
         <meshBasicMaterial color={teamColor} transparent opacity={0.3} />
       </mesh>
+
+      {/* Special indicator for local player */}
+      {isLocalPlayer && (
+        <mesh position={[0, 3.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[0.3, 0.5, 6]} />
+          <meshBasicMaterial color="#ffff00" transparent opacity={0.8} />
+        </mesh>
+      )}
     </group>
   );
 };

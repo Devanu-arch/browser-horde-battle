@@ -1,7 +1,8 @@
+
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState, useEffect } from 'react';
 import { GameMenu } from './GameMenu';
-import { GameWorld } from './GameWorldSimple';
+import { GameWorld } from './GameWorld';
 import { GameUI } from './GameUI';
 import { useGameStore } from '../hooks/useGameStore';
 

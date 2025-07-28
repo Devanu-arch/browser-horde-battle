@@ -13,6 +13,7 @@ export const GameWorld = () => {
   const { 
     gameState, 
     playerTeam, 
+    playerId,
     movePlayer, 
     shootBullet,
     updatePlayerRotation 
@@ -78,6 +79,16 @@ export const GameWorld = () => {
   }, [shootBullet]);
 
   useFrame((state, delta) => {
+    const currentPlayer = playerId ? gameState.players[playerId] : null;
+    
+    if (currentPlayer && !controlsRef.current?.isLocked) {
+      // Position camera behind the player for third-person view
+      camera.position.x = currentPlayer.x - Math.sin(currentPlayer.rotation) * 5;
+      camera.position.y = 4;
+      camera.position.z = currentPlayer.z - Math.cos(currentPlayer.rotation) * 5;
+      camera.lookAt(currentPlayer.x, 1, currentPlayer.z);
+    }
+
     if (!controlsRef.current?.isLocked) return;
 
     const controls = controlsRef.current;
@@ -90,9 +101,8 @@ export const GameWorld = () => {
 
     if (velocity.length() > 0) {
       velocity.normalize();
-      velocity.multiplyScalar(5 * delta); // Movement speed
+      velocity.multiplyScalar(5 * delta);
       
-      // Transform velocity relative to camera direction
       const direction = new THREE.Vector3();
       controls.getDirection(direction);
       const forward = new THREE.Vector3(direction.x, 0, direction.z).normalize();
@@ -106,7 +116,6 @@ export const GameWorld = () => {
       movePlayer(camera.position.x, camera.position.z);
     }
 
-    // Update player rotation based on camera
     const direction = new THREE.Vector3();
     controls.getDirection(direction);
     updatePlayerRotation(Math.atan2(direction.x, direction.z));
@@ -135,7 +144,7 @@ export const GameWorld = () => {
         <Player 
           key={player.id} 
           player={player}
-          isLocalPlayer={player.team === playerTeam}
+          isLocalPlayer={player.id === playerId}
         />
       ))}
 
