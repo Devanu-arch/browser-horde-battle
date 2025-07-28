@@ -1,10 +1,20 @@
+import { useThree } from '@react-three/fiber';
+import { useEffect } from 'react';
 import * as THREE from 'three';
 
 export const Environment = () => {
+  const { scene } = useThree();
+
+  useEffect(() => {
+    // Add fog to the scene
+    scene.fog = new THREE.Fog('#1a1a2e', 10, 50);
+    return () => {
+      scene.fog = null;
+    };
+  }, [scene]);
+
   return (
     <>
-      {/* Fog for atmosphere */}
-      <fog attach="fog" args={['#1a1a2e', 10, 50]} />
 
       {/* Ground */}
       <mesh position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
@@ -92,8 +102,8 @@ export const Environment = () => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={200}
-            array={new Float32Array(Array.from({ length: 600 }, () => (Math.random() - 0.5) * 100))}
+            count={50}
+            array={new Float32Array(Array.from({ length: 150 }, () => (Math.random() - 0.5) * 60))}
             itemSize={3}
           />
         </bufferGeometry>
