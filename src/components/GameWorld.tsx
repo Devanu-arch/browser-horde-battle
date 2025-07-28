@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { PointerLockControls, Text, Box, Plane } from '@react-three/drei';
+import { PointerLockControls } from '@react-three/drei';
 import { useGameStore } from '../hooks/useGameStore';
 import { Player } from './Player';
 import { Zombie } from './Zombie';
@@ -123,8 +123,7 @@ export const GameWorld = () => {
         intensity={0.8}
         color="#ffffff"
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        shadow-mapSize={[2048, 2048]}
       />
       <pointLight position={[0, 5, 0]} intensity={0.5} color="#ff4444" />
 

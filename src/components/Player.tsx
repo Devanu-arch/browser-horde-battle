@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text } from '@react-three/drei';
 import { Player as PlayerType } from '../hooks/useGameStore';
 import * as THREE from 'three';
 
@@ -39,16 +38,11 @@ export const Player = ({ player, isLocalPlayer }: PlayerProps) => {
         <meshLambertMaterial color={teamColor} />
       </mesh>
 
-      {/* Name tag */}
-      <Text
-        position={[0, 3, 0]}
-        fontSize={0.3}
-        color={teamColor}
-        anchorX="center"
-        anchorY="middle"
-      >
-        {player.name}
-      </Text>
+      {/* Name tag - simplified without Text component */}
+      <mesh position={[0, 3, 0]}>
+        <planeGeometry args={[2, 0.5]} />
+        <meshBasicMaterial color={teamColor} transparent opacity={0.8} />
+      </mesh>
 
       {/* Health bar */}
       <group position={[0, 2.8, 0]}>
